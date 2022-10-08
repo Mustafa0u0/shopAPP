@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/constants/error_handling.dart';
@@ -11,7 +12,7 @@ import 'package:shop_app/providers/user_provider.dart';
 import '../../../models/user.dart';
 
 class AddressServices {
-  void saveUserAddress({
+  Future<void> saveUserAddress({
     required BuildContext context,
     required String address,
   }) async {
@@ -37,17 +38,17 @@ class AddressServices {
             userProvider.setUserFromModel(user);
           });
     } catch (e) {
+      log('save address error: $e');
       showSnackBar(context, e.toString());
     }
   }
 
-  void placeOrder({
+  Future<void> placeOrder({
     required BuildContext context,
     required String address,
     required double totalSum,
   }) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    List<Product> productList = [];
 
     try {
       http.Response res = await http.post(Uri.parse('$uri/api/order'),
@@ -60,16 +61,20 @@ class AddressServices {
             'address': address,
             'totalPrice': totalSum,
           }));
+
       httpErrorHandle(
-          context: context,
-          response: res,
-          onSuccess: () {
-            showSnackBar(context, 'You order has been palced!');
-            User user = userProvider.user.copyWith(
-              cart: [],
-            );
-          });
+        response: res,
+        context: context,
+        onSuccess: () {
+          showSnackBar(context, 'Your order has been placed!');
+          User user = userProvider.user.copyWith(
+            cart: [],
+          );
+          userProvider.setUserFromModel(user);
+        },
+      );
     } catch (e) {
+      log('error: $e');
       showSnackBar(context, e.toString());
     }
   }

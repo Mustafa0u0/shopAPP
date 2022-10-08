@@ -6,6 +6,7 @@ import 'package:shop_app/constants/error_handling.dart';
 import 'package:shop_app/constants/global_variables.dart';
 import 'package:shop_app/constants/utils.dart';
 import 'package:shop_app/features/auth/screens/auth_screen.dart';
+import 'package:shop_app/features/auth/screens/signin_screen.dart';
 import 'package:shop_app/models/order.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -53,7 +54,7 @@ class AccountServices {
       await sharedPreferences.setString('x-auth-token', '');
       Navigator.pushNamedAndRemoveUntil(
         context,
-        AuthScreen.routeName,
+        SignInScreen.routeName,
         (route) => false,
       );
     } catch (e) {

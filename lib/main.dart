@@ -4,9 +4,11 @@ import 'package:shop_app/common/widgets/bottom_bar.dart';
 import 'package:shop_app/constants/global_variables.dart';
 import 'package:shop_app/features/admin/screens/admin_screen.dart';
 import 'package:shop_app/features/auth/screens/auth_screen.dart';
+import 'package:shop_app/features/auth/screens/signin_screen.dart';
 import 'package:shop_app/features/auth/services/auth_service.dart';
 import 'package:shop_app/providers/user_provider.dart';
 import 'package:shop_app/router.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(MultiProvider(providers: [
@@ -36,12 +38,19 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Amazon Clone',
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('ar', 'AE'),
+      ],
+      title: 'متجرك',
       theme: ThemeData(
         scaffoldBackgroundColor: GlobalVariables.backgroundColor,
-        colorScheme: const ColorScheme.light(
-          primary: GlobalVariables.secondaryColor,
-        ),
+        primaryColor: GlobalVariables.secondaryColor,
+        accentColor: GlobalVariables.secondaryLightColor,
         appBarTheme: const AppBarTheme(
           elevation: 0,
           iconTheme: IconThemeData(
@@ -55,7 +64,7 @@ class _MyAppState extends State<MyApp> {
           ? Provider.of<UserProvider>(context).user.type == 'user'
               ? const BottomBar()
               : const AdminScreen()
-          : const AuthScreen(),
+          : const SignInScreen(),
     );
   }
 }

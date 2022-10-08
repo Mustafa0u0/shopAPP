@@ -1,9 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:pay/pay.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/user_provider.dart';
 
-import '../../../common/widgets/custom_button.dart';
 import '../../../common/widgets/custom_textfield.dart';
 import '../../../constants/global_variables.dart';
 import '../../../constants/utils.dart';
@@ -61,22 +62,27 @@ class _AddressScreenState extends State<AddressScreen> {
     }
   }
 
-  void onGoPayResult(res) {
+  void onGoPayResult(dynamic res) async {
     if (Provider.of<UserProvider>(context, listen: false)
         .user
         .address
         .isEmpty) {
-      addressServices.saveUserAddress(
-          context: context, address: addressToBeUsed);
-      addressServices.placeOrder(
-        context: context,
-        address: addressToBeUsed,
-        totalSum: double.parse(widget.totalAmount),
-      );
+      try {
+        await addressServices.saveUserAddress(
+            context: context, address: addressToBeUsed);
+        await addressServices.placeOrder(
+          context: context,
+          address: addressToBeUsed,
+          totalSum: double.parse(widget.totalAmount),
+        );
+        log('finish');
+      } catch (e) {
+        log('error: $e');
+      }
     }
   }
 
-  void payPressed(String addressFormProvider) {
+  void payPressed(String addressFromProvider) {
     addressToBeUsed = "";
 
     bool isForm = flatBuildingController.text.isNotEmpty ||
@@ -87,14 +93,16 @@ class _AddressScreenState extends State<AddressScreen> {
     if (isForm) {
       if (_addressFormKey.currentState!.validate()) {
         addressToBeUsed =
-            '${flatBuildingController.text},${areaController.text},${cityController.text} - ${pincodeController.text},';
+            '${flatBuildingController.text}, ${areaController.text}, ${cityController.text} - ${pincodeController.text}';
+
+        onGoPayResult(null);
       } else {
-        throw Exception('Please enter all the Values');
+        throw Exception('Please enter all the values!');
       }
-    } else if (addressFormProvider.isNotEmpty) {
-      addressToBeUsed = addressFormProvider;
+    } else if (addressFromProvider.isNotEmpty) {
+      addressToBeUsed = addressFromProvider;
     } else {
-      showSnackBar(context, 'Error');
+      showSnackBar(context, 'ERROR');
     }
   }
 
@@ -185,20 +193,27 @@ class _AddressScreenState extends State<AddressScreen> {
                 height: 50,
                 onPressed: () => payPressed(address),
               ),
-              const SizedBox(height: 10),
-              GooglePayButton(
-                onPressed: () => payPressed(address),
-                width: double.infinity,
-                type: GooglePayButtonType.buy,
-                paymentConfigurationAsset: 'gpay.json',
-                onPaymentResult: onGoPayResult,
-                paymentItems: paymentItems,
-                margin: const EdgeInsets.only(top: 15),
-                height: 50,
-                loadingIndicator: const Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ),
+              // const SizedBox(height: 10),
+              // GooglePayButton(
+              //   onPressed: () => payPressed(address),
+              //   width: double.infinity,
+              //   type: GooglePayButtonType.buy,
+              //   paymentConfigurationAsset: 'gpay.json',
+              //   onPaymentResult: onGoPayResult,
+              //   paymentItems: paymentItems,
+              //   margin: const EdgeInsets.only(top: 15),
+              //   height: 50,
+              //   loadingIndicator: const Center(
+              //     child: CircularProgressIndicator(),
+              //   ),
+              // ),
+              ElevatedButton(
+                  onPressed: () => payPressed(address),
+                  child: Column(
+                    children: [
+                      Text('Order Now'),
+                    ],
+                  )),
             ],
           ),
         ),

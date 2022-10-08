@@ -5,6 +5,8 @@ import 'package:shop_app/features/admin/screens/add_product_screen.dart';
 import 'package:shop_app/features/admin/screens/category_deals_screen.dart';
 import 'package:shop_app/features/auth/screens/auth_screen.dart';
 import 'package:shop_app/features/auth/screens/home_screen.dart';
+import 'package:shop_app/features/auth/screens/signup_screen.dart';
+import 'package:shop_app/features/auth/screens/signin_screen.dart';
 import 'package:shop_app/features/order_details/screen/order_details_screen.dart';
 import 'package:shop_app/features/product_details/screens/product_details_screen.dart';
 import 'package:shop_app/features/search/screens/search_screen.dart';
@@ -13,10 +15,15 @@ import 'package:shop_app/models/product.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
-    case AuthScreen.routeName:
+    case SignInScreen.routeName:
       return MaterialPageRoute(
         settings: routeSettings,
-        builder: (_) => const AuthScreen(),
+        builder: (_) => const SignInScreen(),
+      );
+    case SignUpScreen.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => const SignUpScreen(),
       );
     case HomeScreen.routeName:
       return MaterialPageRoute(

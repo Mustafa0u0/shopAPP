@@ -2,11 +2,16 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:shop_app/constants/global_variables.dart';
 
 void showSnackBar(BuildContext context, String text) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      content: Text(text),
+      content: Text(
+        text,
+        style: const TextStyle(color: Colors.white, fontSize: 12),
+      ),
+      backgroundColor: GlobalVariables.secondaryColor,
     ),
   );
 }
