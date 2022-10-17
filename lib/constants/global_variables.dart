@@ -32,24 +32,24 @@ class GlobalVariables {
 
   static const List<Map<String, String>> categoryImages = [
     {
-      'title': 'Mobiles',
-      'image': 'assets/images/mobiles.jpeg',
+      'title': 'Dress',
+      'image': 'assets/icons/dress.svg',
     },
     {
-      'title': 'Essentials',
-      'image': 'assets/images/essentials.jpeg',
+      'title': 'Shirt',
+      'image': 'assets/icons/shirt.svg',
     },
     {
-      'title': 'Appliances',
-      'image': 'assets/images/appliances.jpeg',
+      'title': 'Pants',
+      'image': 'assets/icons/pants.svg',
     },
     {
-      'title': 'Books',
-      'image': 'assets/images/books.jpeg',
+      'title': 'Tshirt',
+      'image': 'assets/icons/Tshirt.svg',
     },
     {
       'title': 'Fashion',
-      'image': 'assets/images/fashion.jpeg',
+      'image': 'assets/icons/Tshirt.svg',
     },
   ];
   ButtonStyle buttonStyle() {

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/common/widgets/bottom_bar.dart';
+import 'package:shop_app/common/widgets/splash_screen.dart';
 import 'package:shop_app/constants/global_variables.dart';
 import 'package:shop_app/features/admin/screens/admin_screen.dart';
 import 'package:shop_app/features/auth/screens/auth_screen.dart';
 import 'package:shop_app/features/auth/screens/signin_screen.dart';
 import 'package:shop_app/features/auth/services/auth_service.dart';
+import 'package:shop_app/features/home/screens/home_screen.dart';
 import 'package:shop_app/providers/user_provider.dart';
 import 'package:shop_app/router.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -64,7 +66,7 @@ class _MyAppState extends State<MyApp> {
           ? Provider.of<UserProvider>(context).user.type == 'user'
               ? const BottomBar()
               : const AdminScreen()
-          : const SignInScreen(),
+          : const SplashScreen(),
     );
   }
 }

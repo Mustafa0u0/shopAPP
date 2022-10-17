@@ -1,23 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/constants/global_variables.dart';
 import 'package:shop_app/features/cart/services/cart_services.dart';
 import 'package:shop_app/features/product_details/services/product_details_service.dart';
 
 import '../../../models/product.dart';
 import '../../../providers/user_provider.dart';
 
-class CartProduct extends StatefulWidget {
+class CartCard extends StatefulWidget {
   final int index;
-  const CartProduct({Key? key, required this.index}) : super(key: key);
+
+  const CartCard({super.key, required this.index});
 
   @override
-  State<CartProduct> createState() => _CartProductState();
+  State<CartCard> createState() => _CartCardState();
 }
 
-class _CartProductState extends State<CartProduct> {
+class _CartCardState extends State<CartCard> {
   final ProductDetailsServices productDetailsServices =
       ProductDetailsServices();
   final CartServices cartServices = CartServices();
@@ -35,118 +35,116 @@ class _CartProductState extends State<CartProduct> {
     final productCart = context.watch<UserProvider>().user.cart[widget.index];
     final product = Product.fromMap(productCart['product']);
     final quantity = productCart['quantity'];
-    return Column(
+    return Row(
       children: [
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 10),
-          child: Row(children: [
-            Image.network(
-              product.images[0],
-              fit: BoxFit.contain,
-              height: 135,
-              width: 135,
+        SizedBox(
+          width: 88,
+          child: AspectRatio(
+            aspectRatio: 0.88,
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF5F6F9),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Image.network(product.images[0]),
             ),
-            Column(
-              children: [
-                Container(
-                  width: 235,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(
-                    product.name,
-                    style: const TextStyle(
-                      fontSize: 16,
-                    ),
-                    maxLines: 2,
-                  ),
-                ),
-                Container(
-                  width: 235,
-                  padding: const EdgeInsets.only(left: 10, top: 5),
-                  child: Text(
-                    '\$${product.price}',
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
-                    maxLines: 2,
-                  ),
-                ),
-                Container(
-                  width: 235,
-                  padding: const EdgeInsets.only(
-                    left: 10,
-                  ),
-                  child: const Text('Eligible for FREE Shipping'),
-                ),
-                Container(
-                  width: 235,
-                  padding: const EdgeInsets.only(left: 10, top: 5),
-                  child: const Text(
-                    'In Stock',
-                    style: TextStyle(color: Colors.teal),
-                    maxLines: 2,
-                  ),
-                ),
-              ],
-            )
-          ]),
-        ),
-        Container(
-          margin: const EdgeInsets.all(
-            10,
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black12, width: 1.5),
-                  borderRadius: BorderRadius.circular(5),
-                  color: Colors.black12,
-                ),
-                child: Row(children: [
-                  InkWell(
-                    onTap: () => decreaseQuantity(product),
-                    child: Container(
-                        width: 35,
-                        height: 32,
-                        alignment: Alignment.center,
-                        child: const Icon(
-                          Icons.remove,
-                          size: 18,
-                        )),
+        ),
+        const SizedBox(width: 20),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              product.name,
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+                overflow: TextOverflow.ellipsis,
+              ),
+              maxLines: 1,
+            ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                Text.rich(
+                  TextSpan(
+                    text: '${product.price}\$',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        overflow: TextOverflow.ellipsis,
+                        color: GlobalVariables.secondaryColor),
+                    children: [
+                      // TextSpan(
+                      //     text: " x${cart.numOfItem}",
+                      //     style: Theme.of(context).textTheme.bodyText1),
+                    ],
                   ),
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.black12,
-                        width: 1.5,
+                ),
+                const SizedBox(
+                  width: 15,
+                ),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 1,
+                                blurRadius: 10,
+                              ),
+                            ]),
+                        child: GestureDetector(
+                          onTap: () => increaseQuantity(product),
+                          child: const Icon(
+                            CupertinoIcons.plus,
+                            size: 18,
+                          ),
+                        ),
                       ),
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(0),
-                    ),
-                    child: Container(
-                        width: 35,
-                        height: 32,
-                        alignment: Alignment.center,
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 10),
                         child: Text(
                           quantity.toString(),
-                        )),
+                          style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: GlobalVariables.secondaryColor),
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 1,
+                                blurRadius: 10,
+                              ),
+                            ]),
+                        child: GestureDetector(
+                          onTap: () => decreaseQuantity(product),
+                          child: const Icon(
+                            CupertinoIcons.minus,
+                            size: 18,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  InkWell(
-                    onTap: () => increaseQuantity(product),
-                    child: Container(
-                        width: 35,
-                        height: 32,
-                        alignment: Alignment.center,
-                        child: const Icon(
-                          Icons.add,
-                          size: 18,
-                        )),
-                  ),
-                ]),
-              )
-            ],
-          ),
-        )
+                )
+              ],
+            )
+          ],
+        ),
       ],
     );
   }

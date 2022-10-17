@@ -52,6 +52,9 @@ dependencies:
   fl_chart: ^0.55.2
   charts_flutter: ^0.12.0
   hexcolor: ^2.0.7
+  animated_text_kit: ^4.2.2
+  animations: ^2.0.7
+  curved_navigation_bar: ^1.0.3
 
 dev_dependencies:
   flutter_test:
@@ -79,6 +82,7 @@ flutter:
   assets:
     - assets/
     - assets/images/
+    - assets/icons/
     - assets/applepay.json
     - assets/gpay.json
   # An image asset can refer to one or more resolution-specific "variants", see
